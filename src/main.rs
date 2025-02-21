@@ -18,7 +18,7 @@ fn main() {
         if let Ok(ln) = line {
             let strip_ln = strip_ansi_escapes::strip_str(ln.clone());
             if re.is_match(&strip_ln) {
-                writeln!(out, "{}", ln);
+                writeln!(out, "{}", ln).unwrap();
             }
         }
     }
