@@ -11,16 +11,18 @@ fn main() {
     if args.len() > 1 {
         expr = &args[1];
     }
-    let re = Regex::new(expr).unwrap();
-
-    let stdin = io::stdin();
-    for line in stdin.lock().lines() {
-        if let Ok(ln) = line {
-            let strip_ln = strip_ansi_escapes::strip_str(ln.clone());
-            if re.is_match(&strip_ln) {
-                writeln!(out, "{}", ln).unwrap();
+    if let Ok(re) = Regex::new(expr) {
+        let stdin = io::stdin();
+        for line in stdin.lock().lines() {
+            if let Ok(ln) = line {
+                let strip_ln = strip_ansi_escapes::strip_str(ln.clone());
+                if re.is_match(&strip_ln) {
+                    writeln!(out, "{}", ln).unwrap();
+                }
             }
         }
+        out.flush().unwrap();
+    } else {
+        println!("Wrong regular expression : {}", expr);
     }
-    out.flush().unwrap();
 }
